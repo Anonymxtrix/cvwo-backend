@@ -12,6 +12,27 @@
 
 ActiveRecord::Schema.define(version: 2021_01_29_204406) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "articles", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "status"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commenter"
+    t.text "body"
+    t.bigint "article_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "status"
+    t.index ["article_id"], name: "index_comments_on_article_id"
+  end
+
   create_table "todos", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -21,4 +42,5 @@ ActiveRecord::Schema.define(version: 2021_01_29_204406) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "comments", "articles"
 end
